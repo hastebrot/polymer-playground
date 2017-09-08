@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>dolphin-elements</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../dolphin-elements.html">
+</head>
+
+<body>
+  <test-fixture id="BasicTestFixture">
+    <template>
+      <dolphin-elements></dolphin-elements>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="ChangedPropertyTestFixture">
+    <template>
+      <dolphin-elements property1="value2"></dolphin-elements>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite("dolphin-elements", () => {
+
+      test("init the element with default properties", () => {
+        var element = fixture("BasicTestFixture")
+        expect(element.property1).to.equal("value1")
+        var elementShadowRoot = element.shadowRoot
+        var elementHeader = elementShadowRoot.querySelector("h2")
+        expect(elementHeader.innerHTML).to.equal("Hello value1!")
+      })
+
+      test("set a property on the element", () => {
+        var element = fixture("ChangedPropertyTestFixture")
+        expect(element.property1).to.equal("value2")
+        var elementShadowRoot = element.shadowRoot
+        var elementHeader = elementShadowRoot.querySelector("h2")
+        expect(elementHeader.innerHTML).to.equal("Hello value2!")
+      })
+
+    })
+  </script>
+
+</body>
+
+</html>
