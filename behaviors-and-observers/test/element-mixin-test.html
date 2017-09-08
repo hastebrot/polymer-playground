@@ -18,69 +18,76 @@
       let lastModelValue
 
       suiteSetup(() => {
-        // addEventListener("WebComponentsReady", function () {
-          SimpleElement = class extends Polymer.Element {
-            static get is() {
-              return "simple-element"
-            }
+        SimpleElement = class extends Polymer.Element {
+          static get is() {
+            return "simple-element"
+          }
 
-            static get properties() {
-              return {
-                text: {
-                  type: String,
-                  value: function () { return "foo" }
-                },
-                model: {
-                  type: Object,
-                  value: function () { return {} }
-                }
+          static get properties() {
+            return {
+              text: {
+                type: String,
+                value: "foo"
+              },
+              model: {
+                type: Object,
+                value: function () { return {} }
               }
             }
-
-            static get observers() {
-              return ["_textChanged(text)", "_modelChanged(model.*)"]
-            }
-
-            changeProperties() {
-              console.log("changeProperties()")
-              this.text = "bar"
-              this.set("text", "bar")
-              this.set("model", { key: "value" })
-            }
-
-            _textChanged(newValue, oldValue) {
-              console.log("_textChanged(")
-              lastTextValue = newValue
-            }
-
-            _modelChanged(event) {
-              console.log("_modelChanged()")
-              lastTextValue = event.newValue
-            }
           }
-          customElements.define(SimpleElement.is, SimpleElement)
-        // })
+
+          static get observers() {
+            return ["_textChanged(text.*)", "_modelChanged(model.*)"]
+          }
+
+          changeProperties() {
+            console.log("changeProperties()")
+            this.set("text", "bar")
+            this.set("model", { key: "value" })
+            this.set("model.key", "value2")
+          }
+
+          _textChanged(event) {
+            console.log("_textChanged(")
+            lastTextValue = event
+          }
+
+          _modelChanged(event) {
+            console.log("_modelChanged()")
+            lastModelValue = event
+          }
+        }
+        customElements.define(SimpleElement.is, SimpleElement)
       })
 
-      test("create simple-element", (done) => {
-        // flush(() => {
-          // when:
-          const element = new SimpleElement()
+      test("create simple-element", () => {
+        // given:
+        const element = new SimpleElement()
+        document.body.appendChild(element)
 
-          // then:
-          expect(SimpleElement.is).to.equal("simple-element")
-          done()
-        // })
+        // then:
+        expect(SimpleElement.is).to.equal("simple-element")
+
+        // cleanup:
+        document.body.removeChild(element)
       })
 
       test("call observer", () => {
-        // when:
+        // given:
         const element = new SimpleElement()
+        document.body.appendChild(element)
+
+        // when:
         element.changeProperties()
 
         // then:
-        expect(lastModelValue).to.deep.equal({ path: "model", value: {}, base: {} })
-        expect(lastTextValue).to.deep.equal({ path: "text", value: {}, base: {} })
+        console.debug(lastTextValue)
+        console.debug(lastModelValue)
+        expect(lastTextValue).to.deep.equal({ path: "text", value: "bar", base: "bar" })
+        expect(lastModelValue).to.deep.equal({ path: "model", value: { key: "value" }, base: { key: "value"} })
+
+        // cleanup:
+        document.body.removeChild(element)
       })
     })
   </script>

@@ -2,6 +2,7 @@
 
 ```
 $ polymer test --local firefox,chrome --persistent
+$ wct --local firefox,chrome --persistent --compile always
 ```
 
 ## setup on macos
