@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>dolphin-elements</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../dolphin-element.html">
+</head>
+
+<body>
+  <test-fixture id="BasicTestFixture">
+    <template>
+      <dolphin-element></dolphin-element>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite("<dolphin-element>", () => {
+
+      test("init the element with default properties", (done) => {
+        var element = fixture("BasicTestFixture")
+
+        flush(() => {
+          element.set("model", { bean: "foo" })
+          element.set("model.bean", "bar")
+          element.set("model.array", [])
+          element.set("model.array", [1, 2, 3, 4])
+          element.splice("model.array", 1, 2, 9)
+          console.log(element.model)
+          done()
+        })
+      })
+
+    })
+  </script>
+
+</body>
+
+</html>
