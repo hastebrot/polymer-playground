@@ -1,5 +1,3 @@
-// gradle wrapper --gradle-version 4.2 --distribution-type all
-
 plugins {
     kotlin("jvm", "1.1.4-3")
 }

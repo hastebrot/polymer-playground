@@ -1,0 +1,38 @@
+<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+<script src="../../../web-component-tester/browser.js"></script>
+<link rel="import" href="../../src/client-app/client-app.html">
+
+<test-fixture id="BasicTestFixture">
+  <template>
+    <client-app></client-app>
+  </template>
+</test-fixture>
+
+<test-fixture id="ChangedPropertyTestFixture">
+  <template>
+    <client-app text="dolphin"></client-app>
+  </template>
+</test-fixture>
+
+<script>
+  suite("client-app", function() {
+    test("init the element with default properties", function() {
+      const element = fixture("BasicTestFixture")
+      expect(element.text).to.equal("world")
+
+      const elementShadowRoot = element.shadowRoot
+      const elementHeader = elementShadowRoot.querySelector("h2")
+      expect(elementHeader.innerHTML).to.equal("Hello world!")
+    })
+
+    test("set a property on the element", function() {
+      const element = fixture("ChangedPropertyTestFixture")
+      expect(element.text).to.equal("dolphin")
+
+      const elementShadowRoot = element.shadowRoot
+      const elementHeader = elementShadowRoot.querySelector("h2")
+      expect(elementHeader.innerHTML).to.equal("Hello dolphin!")
+    })
+
+  })
+</script>
